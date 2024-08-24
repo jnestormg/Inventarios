@@ -1,22 +1,43 @@
-<html xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui" >
+<html xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui">
 
-      <h:head>
-        <title>Sistema de inventarios</title>
-      </h:head>
-      <h:body>
-        <h1>inventarios</h1>
-        <p:dataTable value="#{indexController.listaProductos}" var="producto">
-          <p:column headerText="Nombre">
-            <h:outputText value="#{producto.nombre}"/>
-          </p:column>
-          <p:column headerText="Precio">
-            <h:outputText value="#{producto.precio}"/>
-          </p:column>
+<h:head>
+  <title>Sistema de inventarios</title>
+</h:head>
+<h:body>
+  <h:form id="form-inventarios">
+    
+  <p:growl id="mensajes" showDetail="true"/>
 
-        </p:dataTable>
-       
-      </h:body>
+    <div class="container-inventario">
+      
+      <h:outputText value="Inventario" style="font-size: 30px;" />
+      <p:dataTable value="#{indexController.listaProductos}" var="producto" reflow="true" resizeMode="expand"
+        resizableColumns="true">
+        <f:facet name="header">
+          Productos disponibles
+        </f:facet>
+        <p:column headerText="Nombre">
+          <h:outputText value="#{producto.nombre}" />
+        </p:column>
+        <p:column headerText="Precio">
+          <h:outputText value="#{producto.precio}">
+            <f:convertNumber type="currency" currencySymbol="$" />
+          </h:outputText>
+        </p:column>
+        <p:column headerText="Cantidad">
+          <h:outputText value="#{producto.cantidad}" />
+        </p:column>
+        <p:column headerText="Descripción">
+          <h:outputText value="#{producto.descripcion}" />
+        </p:column>
+  
+      </p:dataTable>
+    </div>
+  </h:form>
+ 
+
+
+</h:body>
 
 </html>
