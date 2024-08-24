@@ -7,6 +7,16 @@
       </h:head>
       <h:body>
         <h1>inventarios</h1>
+        <p:dataTable value="#{indexController.listaProductos}" var="producto">
+          <p:column headerText="Nombre">
+            <h:outputText value="#{producto.nombre}"/>
+          </p:column>
+          <p:column headerText="Precio">
+            <h:outputText value="#{producto.precio}"/>
+          </p:column>
+
+        </p:dataTable>
+       
       </h:body>
 
 </html>
