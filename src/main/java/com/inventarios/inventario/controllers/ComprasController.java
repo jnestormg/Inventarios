@@ -57,20 +57,12 @@ public class ComprasController {
     this.productoSeleccionado = new Productos();
     this.compra= new Compras();
     this.listaCompras= null;
-    System.out.println("nuevo......................");
     logger.info("se crea nuevo producto"+this.productoSeleccionado);
 
-    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Compra nuevo"));
 
   }
 
 
-  public void mensaje(){
-    FacesContext.getCurrentInstance().addMessage(null, 
-    new FacesMessage(FacesMessage.SEVERITY_INFO, "Info Message", "mesanje"));
-  }
-
-  
 
   public void guardar() {
     logger.info("prodcucto a guardar"+this.productoSeleccionado);
@@ -81,7 +73,7 @@ public class ComprasController {
     this.compra.setProductos(productoSeleccionado);
     this.comprasService.guardarCompras(compra);
  
-      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto agregado"+this.productoSeleccionado));
+      FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto agregado"));
     System.out.println("guardar......................");
     }
     else{
