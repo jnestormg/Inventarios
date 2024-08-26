@@ -1,10 +1,14 @@
 package com.inventarios.inventario.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inventarios.inventario.entities.Compras;
+import com.inventarios.inventario.entities.Productos;
 import com.inventarios.inventario.services.ComprasService;
 import com.inventarios.inventario.services.ProductosService;
 
@@ -15,43 +19,48 @@ import jakarta.faces.event.ActionEvent;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import lombok.Data;
-import com.inventarios.inventario.entities.*;
-import java.util.List;
 
 @Component
-@ViewScoped
 @Data
-@Named
-public class indexController {
+@ViewScoped
+@Named(value = "comprasController")
+public class ComprasController {
 
-  @Autowired
-  ProductosService productosService;
+    @Autowired
+    ComprasService comprasService;
 
-  private static final Logger logger = LoggerFactory.getLogger(indexController.class);
+    @Autowired
+    ProductosService productosService;
 
-  private List<Productos> listaProductos;
+    private List<Compras> listaCompras;
 
-  private List<Productos> listaProductosBusqueda;
-
-  private Productos productoSeleccionado;
+    private List<Compras> listaComprasBusqueda;
 
 
-  @PostConstruct
-  public void init() {
-    mostrarProductos();
-    mensaje();
-  }
+    private Productos productoSeleccionado;
 
-  public void mostrarProductos() {
-    this.listaProductos = productosService.mostrarProductos();
-  }
+    private Compras compra;
+   
+    private static final Logger logger= LoggerFactory.getLogger(indexController.class);
 
-  public void nuevo(ActionEvent event) {
+
+    @PostConstruct
+    public void init(){
+        mostrarCompras();
+    }
+
+    public void mostrarCompras() {
+        this.listaCompras = comprasService.mostrarCompras();
+    }
+
+    public void nuevo(ActionEvent event) {
     this.productoSeleccionado = new Productos();
+    this.compra= new Compras();
+    this.listaCompras= null;
     System.out.println("nuevo......................");
     logger.info("se crea nuevo producto"+this.productoSeleccionado);
 
-    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto nuevo"));
+    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Compra nuevo"));
 
   }
 
@@ -67,6 +76,11 @@ public class indexController {
     logger.info("prodcucto a guardar"+this.productoSeleccionado);
     if(this.productoSeleccionado.getId() ==null){
     this.productosService.guardarProductos(this.productoSeleccionado);
+    this.compra.setFecha_ingreso(compra.getFecha_ingreso());
+    this.compra.setCantidad(productoSeleccionado.getCantidad());
+    this.compra.setProductos(productoSeleccionado);
+    this.comprasService.guardarCompras(compra);
+ 
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto agregado"+this.productoSeleccionado));
     System.out.println("guardar......................");
     }
@@ -74,9 +88,9 @@ public class indexController {
       FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Producto no agregado"));
 
     }
+    this.productoSeleccionado= null;
+    mostrarCompras();
 
   }
-
-
 
 }

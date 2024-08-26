@@ -1,26 +1,56 @@
-<html xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+<ui:composition xmlns:f="http://xmlns.jcp.org/jsf/core" 
+xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:p="http://primefaces.org/ui" 
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/template/template.xhtml">
 
-<h:head>
-  <title>Sistema de inventarios</title>
-  <h:outputStylesheet name="static/css/style.css"/>
-</h:head>
-<h:body>
-  <header class="cabecera">canve</header>
-  <h:form id="form-inventarios">
-    
-  <p:growl id="mensajes" showDetail="true"/>
+  <ui:define name="contenido">
+    <div class="container-inventario">
 
-    <ui:insert name="contenido">
-
-    </ui:insert>
-    
-  </h:form>
- 
+      <h:form id="form-inventario">
+        <p:growl id="mensaje" showDetail="true" />
 
 
-</h:body>
+        <p:dataTable var="productos" value="#{indexController.listaProductos}" id="tbproductos-inventario" reflow="true"
+          resizeMode="expand" resizableColumns="true" touchtable="true" paginator="true" paginatorPosition="bottom"
+          rows="10" emptyMessage="No existen registros" widgetVar="producto"
+          filteredValue="#{indexController.listaProductosBusqueda}">
 
-</html>
+          <f:facet name="header">
+            <h3>Productos existentes</h3>
+            <p:inputText placeholder="Buscar" id="globalFilter" onkeyup="PF('producto').filter()" />
+          </f:facet>
+
+          <p:column headerText="Nombre" sortBy="#{productos.nombre}" filterBy="#{productos.nombre}">
+            <f:facet name="header">
+              <h:outputText value="Nombre" />
+            </f:facet>
+            <h:outputText value="#{productos.nombre}" />
+          </p:column>
+          <p:column headerText="Precio" sortBy="#{productos.precio}" filterBy="#{productos.precio}">
+            <h:outputText value="#{productos.precio}">
+              <f:convertNumber type="currency" currencySinmbol="$" />
+            </h:outputText>
+          </p:column>
+
+          <p:column headerText="Cantidad" sortBy="#{productos.cantidad}" filterBy="#{productos.cantidad}">
+            <h:outputText value="#{productos.cantidad}" />
+          </p:column>
+
+          <p:column headerText="Descripción" sortBy="#{productos.descripcion}" filterBy="#{productos.descripcion}">
+            <h:outputText value="#{productos.descripcion}" />
+          </p:column>
+
+          <f:facet name="footer">
+
+
+          </f:facet>
+
+        </p:dataTable>
+
+
+      </h:form>
+      
+    </div>
+  </ui:define>
+</ui:composition>

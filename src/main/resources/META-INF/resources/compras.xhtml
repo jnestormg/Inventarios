@@ -1,0 +1,98 @@
+<ui:composition xmlns:f="http://xmlns.jcp.org/jsf/core"
+ xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+      template="/template/template.xhtml">
+
+    <ui:define name="contenido">
+        <div class="contenido-compras">
+
+            <h:form id="form">
+                <p:growl id="mensajes" showDetail="true" />
+
+
+                <p:commandButton value="nuevo" update="form form:mensajes form-datos form:tbproductos"
+                    actionListener="#{comprasController.nuevo}" />
+
+                <p:dataTable var="compras" value="#{comprasController.listaCompras}" id="tbproductos"
+                    reflow="true" rendered="#{comprasController.listaCompras!=null}"
+                    resizeMode="expand" resizableColumns="true" touchtable="true" paginator="true"
+                    paginatorPosition="bottom" rows="10" emptyMessage="No existen registros" widgetVar="producto"
+                    filteredValue="#{comprasController.listaComprasBusqueda}">
+
+                    <f:facet name="header">
+                        <h3>Compras</h3>
+                        <p:inputText placeholder="Buscar" id="globalFilter" onkeyup="PF('producto').filter()" />
+                    </f:facet>
+
+                    <p:column headerText="Nombre" sortBy="#{compras.productos.nombre}" filterBy="#{compras.productos.nombre}">
+                        <f:facet name="header">
+                            <h:outputText value="Nombre" />
+                        </f:facet>
+                        <h:outputText value="#{compras.productos.nombre}" />
+                    </p:column>
+                    <p:column headerText="Precio" sortBy="#{compras.productos.precio}" filterBy="#{compras.productos.precio}">
+                        <h:outputText value="#{compras.productos.precio}">
+                            <f:convertNumber type="currency" currencySinmbol="$" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Cantidad" sortBy="#{compras.productos.cantidad}" filterBy="#{compras.productos.cantidad}">
+                        <h:outputText value="#{compras.productos.cantidad}" />
+                    </p:column>
+
+                    <p:column headerText="Descripción" sortBy="#{compras.productos.descripcion}"
+                        filterBy="#{compras.productos.descripcion}">
+                        <h:outputText value="#{compras.productos.descripcion}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha" sortBy="#{compras.fecha_ingreso}" filterBy="#{compras.fecha_ingreso}">
+                        <h:outputText value="#{compras.fecha_ingreso}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+
+
+                    </f:facet>
+
+                </p:dataTable>
+
+
+            </h:form>
+
+            <!--formulario-->
+
+            <h:form id="form-datos">
+                <p:panelGrid columns="4" layout="grid" id="campos"
+                 rendered="#{comprasController.productoSeleccionado != null}">
+
+                    <p:outputLabel value="Nombre" />
+                    <p:inputText id="nombre" value="#{comprasController.productoSeleccionado.nombre}" />
+
+                    <p:outputLabel value="Precio" />
+                    <p:inputText id="precio" type="number" value="#{comprasController.productoSeleccionado.precio}" />
+
+                    <p:outputLabel value="Cantidad" />
+                    <p:inputText id="cantidad" type="number" value="#{comprasController.productoSeleccionado.cantidad}" />
+
+                    <p:outputLabel for="fecha" value="Fecha de compra" />
+                    <p:datePicker id="fecha" showIcon="true" value="#{comprasController.compra.fecha_ingreso}" showOnFocus="false"
+                    locale="es" pattern="dd/MM/yyyy" />
+
+                    <p:outputLabel value="Descripción" />
+                    <p:inputTextarea id="descripcion" autoResize="false" value="#{comprasController.productoSeleccionado.descripcion}" />
+
+                    <p:spacer width="100" height="10"/>
+                    <p:commandButton value="guardar" update="form form-datos form:mensajes" actionListener="#{comprasController.guardar}" />
+
+                </p:panelGrid>
+
+
+
+            </h:form>
+
+        </div>
+
+    </ui:define>
+
+</ui:composition>
